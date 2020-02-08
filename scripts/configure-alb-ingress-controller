@@ -1,0 +1,28 @@
+
+# This is a stupid script. If you have an arn with a different name it will fail.
+# Use at your own risk. But if you followed the installation instructions to the letter it should make the config process fast.
+
+# This will use aws cli to populate alb-ingress-controller.yaml
+
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml 
+kubectl apply -f rbac-role.yaml
+
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/iam-policy.json
+aws iam create-policy --policy-name alb-ingress-controller --policy-document file://iam-policy.json
+
+alb_ingress_controller=`aws iam list-policies --query 'Policies[?PolicyName==\`alb-ingress-controller\`].Arn' --output text`
+eksctl create iamserviceaccount --name alb-ingress-controller \
+                                --namespace kube-system \
+                                --cluster eks-cluster \
+                                --attach-policy-arn ${alb_ingress_controller} \
+                                --approve \
+                                --override-existing-serviceaccounts
+
+region=us-east-1
+cluster=`aws eks list-clusters --query clusters --output text`
+vpc=`aws eks describe-cluster --name ${cluster} --query 'cluster.resourcesVpcConfig.vpcId' --output text`
+
+sed "s|myvpc|${vpc}|;s|myregion|${region}|;s|mycluster|${cluster}|" alb-ingress-controller.yaml.txt > alb-ingress-controller.yaml
+
+kubectl apply -f alb-ingress-controller.yaml
+kubectl rollout status deployment alb-ingress-controller -n kube-system

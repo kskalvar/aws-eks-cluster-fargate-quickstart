@@ -21,7 +21,6 @@ write_files:
         echo "install tmux" >> /tmp/install-eks-support
         yum -y install tmux
         
-        
         echo "upgrade awscli" >> /tmp/install-eks-support
         pip install awscli --upgrade
         

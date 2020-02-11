@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "web"
+  namespace: "web"
+spec:
+  selector:
+    matchLabels:
+      app: "web"
+  replicas: 15
+  template:
+    metadata:
+      labels:
+        app: "web"
+    spec:
+      containers:
+      - image: kskalvar/web
+        imagePullPolicy: Always
+        name: "web"
+        ports:
+        - containerPort: 5000

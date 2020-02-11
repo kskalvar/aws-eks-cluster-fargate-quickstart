@@ -1,8 +1,0 @@
-
-# This is a stupid script. If you have an stack name with a different name it will fail.
-# Use at your own risk. But if you followed the installation instructions to the letter it should make the config process fast.
-
-# This will use aws cli to populate 2048-ingress.yaml
-
-subnets=`aws cloudformation --region us-east-1 describe-stacks --stack-name eksctl-eks-cluster-cluster --query Stacks[].Outputs[1].OutputValue --output text`
-sed "s|mysubnets|${subnets}|" 2048-ingress.yaml.txt > 2048-ingress.yaml

@@ -1,13 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "web"
-  namespace: "web"
+  name: "web-container-ip"
+  namespace: "web-namespace"
+  labels:
+    app: webme
 spec:
   selector:
     matchLabels:
       app: "web"
-  replicas: 15
+  replicas: 150
   template:
     metadata:
       labels:

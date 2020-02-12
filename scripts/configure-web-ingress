@@ -4,7 +4,9 @@
 
 # This will use aws cli to populate web-ingress.yaml
 
-subnets=`aws cloudformation --region us-east-1 describe-stacks \
+region=us-east-1
+
+subnets=`aws cloudformation --region ${region} describe-stacks \
                             --stack-name eksctl-eks-cluster-cluster \
                             --query Stacks[].Outputs[1].OutputValue \
                             --output text`

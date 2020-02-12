@@ -57,7 +57,11 @@ write_files:
         echo "copy configure-alb-ingress-controller $HOME" >> /tmp/install-eks-support
         runuser -l ec2-user -c 'cp ~/aws-eks-cluster-fargate-quickstart/scripts/configure-alb-ingress-controller ~'
         runuser -l ec2-user -c 'chmod 777 configure-alb-ingress-controller'
-       
+        
+        echo "copy configure-web-ingress $HOME" >> /tmp/install-eks-support
+        runuser -l ec2-user -c 'cp ~/aws-eks-cluster-fargate-quickstart/scripts/configure-web-ingress ~'
+        runuser -l ec2-user -c 'chmod 777 configure-web-ingress'
+               
         echo "copy configure-kube-dashboard $HOME" >> /tmp/install-eks-support
         runuser -l ec2-user -c 'cp ~/aws-eks-cluster-fargate-quickstart/scripts/configure-kube-dashboard ~'
         runuser -l ec2-user -c 'chmod 777 configure-kube-dashboard'

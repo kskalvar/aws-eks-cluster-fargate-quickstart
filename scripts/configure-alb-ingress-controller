@@ -4,6 +4,10 @@
 
 # This will use aws cli to populate alb-ingress-controller.yaml
 
+region=us-east-1
+cluster=`aws eks list-clusters --query clusters --output text`
+vpc=`aws eks describe-cluster --name ${cluster} --query 'cluster.resourcesVpcConfig.vpcId' --output text`
+
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml 
 kubectl apply -f rbac-role.yaml
 
@@ -13,14 +17,10 @@ aws iam create-policy --policy-name alb-ingress-controller --policy-document fil
 alb_ingress_controller=`aws iam list-policies --query 'Policies[?PolicyName==\`alb-ingress-controller\`].Arn' --output text`
 eksctl create iamserviceaccount --name alb-ingress-controller \
                                 --namespace kube-system \
-                                --cluster eks-cluster \
+                                --cluster ${cluster} \
                                 --attach-policy-arn ${alb_ingress_controller} \
                                 --approve \
                                 --override-existing-serviceaccounts
-
-region=us-east-1
-cluster=`aws eks list-clusters --query clusters --output text`
-vpc=`aws eks describe-cluster --name ${cluster} --query 'cluster.resourcesVpcConfig.vpcId' --output text`
 
 sed "s|myvpc|${vpc}|;s|myregion|${region}|;s|mycluster|${cluster}|" alb-ingress-controller.yaml.txt > alb-ingress-controller.yaml
 

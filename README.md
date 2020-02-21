@@ -8,7 +8,8 @@ will use the eksctl utility AWS has provided to create the EKS Cluster.
 ```
 This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  This readme updates an article "Getting Started with Amazon EKS" referenced below and provides a more basic step by step process.  It uses CloudFormation and cloud-init scripts we created to do more of the heavy lifting required to setup the cluster.  
 ```
-Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root Account, and you can login to an EC2 Instance remotely.
+Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root Account,
+and you can login to an EC2 Instance remotely.
 ```
 Steps:  
 * [Create an EC2 Instance](#create-an-ec2-instance)

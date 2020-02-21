@@ -2,11 +2,11 @@ AWS Elastic Kubernetes Service (EKS) Fargate QuickStart
 =======================================================
 Abstract:
 ```
-Although AWS EKS has been available for quite a while and AWS EKS Fargate has finally been released, there is
-some configuration still required to get the Fargate worker nodes to work with the cluster.  In this QuickStart
-will use the eksctl utility AWS has provided to create the EKS Cluster.  
+Although AWS EKS has been available for quite a while and AWS EKS Fargate has finally been released, there are 
+still some manual configuration required to get the Fargate worker nodes to work with the cluster. In this QuickStart
+we're going to 
 ```
-This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  This readme updates an article "Getting Started with Amazon EKS" referenced below and provides a more basic step by step process.  It uses CloudFormation and cloud-init scripts we created to do more of the heavy lifting required to setup the cluster.  
+This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  
 ```
 Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root
 Account, and you can login to an EC2 Instance remotely.
@@ -69,14 +69,8 @@ Select "default"
 Review and Launch  
 Click on "Launch"
 
-### Connect to EC2 Instance
-Using ssh from your local machine, connect to your AWS EC2 Instance
-```
-ssh -i <AWS EC2 Private Key> ec2-user@<AWS EC2 Instance IP Address>
-```
-
 ### Check to insure cloud-init has completed
-See contents of "/tmp/install-eks-support" it should say "installation complete".
+Log into your EC2 instance above and check the contents of "/tmp/install-eks-support" it should say "installation complete".
 
 ### Configure AWS CLI
 Use the AWS CLI to set Access Key, Secret Key, and Region Name

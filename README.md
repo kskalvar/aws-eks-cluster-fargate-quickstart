@@ -8,8 +8,8 @@ will use the eksctl utility AWS has provided to create the EKS Cluster.
 ```
 This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  This readme updates an article "Getting Started with Amazon EKS" referenced below and provides a more basic step by step process.  It uses CloudFormation and cloud-init scripts we created to do more of the heavy lifting required to setup the cluster.  
 ```
-Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root Account,
-and you can login to an EC2 Instance remotely.
+Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root
+Account, and you can login to an EC2 Instance remotely.
 ```
 Steps:  
 * [Create an EC2 Instance](#create-an-ec2-instance)
@@ -92,7 +92,7 @@ aws s3 ls
 ```
 ## Create EKS Cluster, IAM Security and ALB Ingress Controller
 Will be using eksctl to create the cluster and the iam security provider.  Additionally the cloud-init script  
-install the project from githug and copied the scripts will use into the /home/ec2-user.  
+install this project from github and copied the scripts will use into the /home/ec2-user.  
 ```
 eksctl create cluster --name eks-cluster --zones=us-east-1c,us-east-1b,us-east-1a --version 1.14 --fargate
 eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
@@ -114,8 +114,8 @@ kubectl get nodes
 You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
 
 ### Create a AWS EKS Fargate Profile
-Will use eksctl to create a unique Fargate Profile for this webapp.  This also assoicates a namespace with the profile which we will  
-use when deploying the webapp below.    
+Will use eksctl to create a unique Fargate Profile for this webapp.  This also assoicates a namespace with the profile
+which we will use when deploying the webapp below.    
 ```
 eksctl create fargateprofile --name web --namespace web-namespace --cluster eks-cluster
 ```
@@ -123,12 +123,13 @@ eksctl create fargateprofile --name web --namespace web-namespace --cluster eks-
 ### Deploy Web App
 Deploy the webapp to the cluster using the Fargate Profile and Namespace we created above.
 ```
-NOTE: There is also a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.  It requires the AWS VPC Public Subnets used by the cluster and    
-can only be known after the cluster is created.  Also the Application Load Balancer may take a few minutes to provision.
+NOTE: There is also a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.
+It requires the AWS VPC Public Subnets used by the cluster and can only be known after the cluster is created.
+
+Additionall the Application Load Balancer may take a few minutes to provision.
 ```
 Use kubectl to create the web service
 ```
-
 kubectl apply -f web-namespace.yaml
 
 kubectl apply -f web-deployment.yaml

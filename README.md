@@ -14,7 +14,7 @@ Steps:
 * [Create an EC2 Instance](#create-an-ec2-instance)
 * [Create EKS Cluster IAM Security and ALB Ingress Controller](#create-eks-cluster-iam-security-and-alb-ingress-controller)  
 * [Deploy WebApp to Your Cluster](#deploy-webapp-to-your-cluster)
-* [Configure the Kubernetes Dashboard](#configure-the-kubernetes-dashboard)  
+* [Configure the Kubernetes Dashboard (Optional)](#configure-the-kubernetes-dashboard-optional)  
 * [Remove AWS EKS Cluster](#remove-aws-eks-cluster)  
 * [References](#references)   
 
@@ -146,7 +146,7 @@ kubectl get ingress/web-ingress -n web-namespace
 ```
 
 ### Test from browser
-Using your client-side browser enter the following URL
+Using your client-side browser enter the following URL. NOTE: It takes a few minute for ALB to be provisioned!
 ```
 http://<ADDRESS>
 ```
@@ -165,7 +165,7 @@ Use eksctl to delete profile.
 eksctl delete fargateprofile --name web --cluster eks-cluster
 ```
 
-## Configure the Kubernetes Dashboard
+## Configure the Kubernetes Dashboard (Optional)
 You will need to configure the dashboard from the AWS EC2 Instance you created as well.  Use ssh to create a tunnel on port 8001 from your local machine.  This is a step by step process.
 
 ### configure-kube-dashboard
@@ -189,6 +189,12 @@ Using your local client-side browser enter the following URL. The configure-kube
 also generated a "Security Token" required to login to the dashboard.
 ```
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+```
+
+### Scale Deployment
+Scale the deploment as requried
+```
+kubectl scale deployment web-container-ip --replicas=4 -n web-namespace
 ```
 
 ## Remove AWS EKS Cluster

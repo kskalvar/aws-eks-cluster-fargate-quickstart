@@ -1,5 +1,5 @@
-AWS Elastic Kubernetes Service (EKS) QuickStart  
-===============================================
+AWS Elastic Kubernetes Service (EKS) Fargate QuickStart  
+=======================================================
 Abstract:
 ```
 Although AWS EKS has been available for quite a while and AWS EKS Fargate has finally been released, there is some configureation
@@ -14,7 +14,12 @@ created to do more of the heavy lifting required to setup the cluster.
 Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root Account, and you can login to an EC2 Instance remotely.
 
 Steps:  
-* [Configure kubectl on Your EC2 Instance](#configure-kubectl-on-your-ec2-instance)  
+* [Create an EC2 Instance](#create-an-ec2-instance)
+* [Create EKS Cluster IAM Security and ALB Ingress Controller](#create-eks-cluster-iam-security-and-alb-ingress-controller)  
+* [Deploy WebApp to Your Cluster](#deploy-webapp-to-your-cluster)
+* [Configure the Kubernetes Dashboard](#configure-the-kubernetes-dashboard)  
+* [Remove AWS EKS Cluster](#remove-aws-eks-cluster)  
+* [References](#references)   
 
 
 To make this first microservice easy to deploy we'll use a docker image located in DockerHub at kskalvar/web.  This image is nothing more than a simple webapp that returns the current ip address of the container it's running in.  We'll create an external AWS Application Load Balancer and you should be able to see a unique ip address as it is load balanced across containers.
@@ -45,7 +50,7 @@ Click on "Advanced Details
 ```
 User data
 Select "As file"
-Click on "Choose File" and Select "cloud-init/cloud-init" from the local project directory 
+Click on "Choose File" and Select "cloud-init/cloud-init" from github project directory 
 ```  
 Next
 
@@ -168,8 +173,8 @@ Use eksctl to delete profile.
 eksctl delete fargateprofile --name web --cluster eks-cluster
 ```
 
-## Configure the Kubernetes Dashboard (optional)
-You will need to configure the dashboard from the AWS EC2 Instance you created as well as use ssh to create a tunnel on port 8001 from your local machine.  This is a step by step process.
+## Configure the Kubernetes Dashboard
+You will need to configure the dashboard from the AWS EC2 Instance you created as well.  Use ssh to create a tunnel on port 8001 from your local machine.  This is a step by step process.
 
 ### configure-kube-dashboard
 Configure Kubernetes Dashboard 
@@ -194,7 +199,7 @@ also generated a "Security Token" required to login to the dashboard.
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 ```
 
-## Remove Your AWS EKS Cluster
+## Remove AWS EKS Cluster
 Use eksctl to delete all resources used by the AWS EKS Cluster
 ```
 Note: Before proceeding be sure you delete the ingress, service, deployment, and namespace as instructed above.

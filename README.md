@@ -85,8 +85,8 @@ Test aws cli
 aws s3 ls
 ```
 ## Create EKS Cluster, IAM Security and ALB Ingress Controller
-Will be using eksctl to create the cluster and the iam security provider.  Additionally the cloud-init script  
-install this project from github and copied the scripts will use into the /home/ec2-user.  
+We will be using eksctl to create the cluster and the iam security provider.  The cloud-init script  
+will install this project from github and copy any scripts we need into /home/ec2-user.  
 ```
 eksctl create cluster --name eks-cluster --zones=us-east-1c,us-east-1b,us-east-1a --version 1.14 --fargate
 eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve

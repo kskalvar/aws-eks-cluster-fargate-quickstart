@@ -2,17 +2,14 @@ AWS Elastic Kubernetes Service (EKS) Fargate QuickStart
 =======================================================
 Abstract:
 ```
-Although AWS EKS has been available for quite a while and AWS EKS Fargate has finally been released, there is some configureation
-still required to get the Fargate worker nodes to work with the cluster.  In this QuickStart will use the eksctl utility AWS has provided 
-create the EKS Cluster.  We'll also use some basic shell scripts to configure kubectl on the  
-EC2 Instance we'll use as a "cloud shell" to talk to the cluster.  
+Although AWS EKS has been available for quite a while and AWS EKS Fargate has finally been released, there is
+some configuration still required to get the Fargate worker nodes to work with the cluster.  In this QuickStart
+will use the eksctl utility AWS has provided to create the EKS Cluster.  
 ```
-This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.
-This readme updates an article "Getting Started with Amazon EKS" referenced below and provides a more basic step by step process.  It uses CloudFormation and cloud-init scripts we
-created to do more of the heavy lifting required to setup the cluster.  
-
+This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  This readme updates an article "Getting Started with Amazon EKS" referenced below and provides a more basic step by step process.  It uses CloudFormation and cloud-init scripts we created to do more of the heavy lifting required to setup the cluster.  
+```
 Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root Account, and you can login to an EC2 Instance remotely.
-
+```
 Steps:  
 * [Create an EC2 Instance](#create-an-ec2-instance)
 * [Create EKS Cluster IAM Security and ALB Ingress Controller](#create-eks-cluster-iam-security-and-alb-ingress-controller)  
@@ -27,7 +24,7 @@ To make this first microservice easy to deploy we'll use a docker image located 
 The project also includes the Dockerfile for those interested in the configuration of the actual application or to build your own and deploy using ECR.
 
 ## Create an EC2 Instance 
-We'll use an EC2 instance to install kubectl, eksctl, create the EKS Cluster, and Worker Nodes.  This is a step by step process.
+We'll using an EC2 instance to install kubectl, eksctl, create the EKS Cluster, and worker nodes.  This is a step by step process.
 
 ### AWS EC2 Dashboard
 

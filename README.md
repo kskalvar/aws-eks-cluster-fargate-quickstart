@@ -2,65 +2,69 @@ AWS Elastic Kubernetes Service (EKS) QuickStart
 ===============================================
 Abstract:
 ```
-Although AWS EKS has been in GA for quite a while, and AWS EKS Fargate on the roadmap but not available yet,
-it still requires a fair amount of manual effort to create the worker nodes and configure kubectl to talk to
-the cluster.  In this QuickStart will build on CloudFormation scripts AWS has already provided to fully
-automate the creation of the EKS Cluster.  We'll also use some basic shell scripts to configure kubectl on the  
-EC2 Instance to talk to the cluster.  
+Although AWS EKS has been available for quite a while and AWS EKS Fargate has finally been released, there is some configureation
+still required to get the Fargate worker nodes to work with the cluster.  In this QuickStart will use the eksctl utility AWS has provided 
+create the EKS Cluster.  We'll also use some basic shell scripts to configure kubectl on the  
+EC2 Instance we'll use as a "cloud shell" to talk to the cluster.  
 ```
-This solution shows how to create an AWS EKS Cluster and deploy a simple web application with an external Load Balancer. This readme updates an article "Getting Started with Amazon EKS" referenced below and provides a more basic step by step process.  It uses CloudFormation and cloud-init scripts we
+This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.
+This readme updates an article "Getting Started with Amazon EKS" referenced below and provides a more basic step by step process.  It uses CloudFormation and cloud-init scripts we
 created to do more of the heavy lifting required to setup the cluster.  
 
 Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root Account, and you can login to an EC2 Instance remotely.
 
 Steps:  
-* [Create AWS EKS Cluster and EC2 Instance for Kubectl Console using AWS CloudFormation](#create-aws-eks-cluster-and-ec2-instance-for-kubectl-console-using-aws-cloudformation)  
 * [Configure kubectl on Your EC2 Instance](#configure-kubectl-on-your-ec2-instance)  
-* [Deploy WebApp to Your Cluster](#deploy-webapp-to-your-cluster)  
-* [Configure the Kubernetes Dashboard (Optional)](#configure-the-kubernetes-dashboard-optional)  
-* [Remove Your AWS EKS Cluster](#remove-your-aws-eks-cluster)  
 
 
-To make this first microservice easy to deploy we'll use a docker image located in DockerHub at kskalvar/web.  This image is nothing more than a simple webapp that returns the current ip address of the container it's running in.  We'll create an external AWS Load Balancer and you should see a unique ip address as it is load balanced across containers.
+To make this first microservice easy to deploy we'll use a docker image located in DockerHub at kskalvar/web.  This image is nothing more than a simple webapp that returns the current ip address of the container it's running in.  We'll create an external AWS Application Load Balancer and you should be able to see a unique ip address as it is load balanced across containers.
 
 The project also includes the Dockerfile for those interested in the configuration of the actual application or to build your own and deploy using ECR.
 
-## Create AWS EKS Cluster and EC2 Instance for Kubectl Console using AWS CloudFormation 
-We'll use CloudFormation to create the EKS Cluster, Worker Nodes, and EC2 Instance in which to run
-kubectl.  This is a step by step process.
+## Create an EC2 Instance 
+We'll use an EC2 instance to install kubectl, eksctl, create the EKS Cluster, and Worker Nodes.  This is a step by step process.
 
-### AWS CloudFormation Dashboard
-Click on "Create Stack"  
-Select "Specify an Amazon S3 template URL"  
-```
-https://998551034662-aws-eks-cluster.s3.amazonaws.com/eks-cluster-demo.json
-```
-Click on "Next"  
+### AWS EC2 Dashboard
 
-Specify Details
-```
-Stack name: eks-cluster-demo
-KeyName: <Your AWS KeyName>
-```
-Click on "Next"  
-Click on "Next"  
-```
-Select "I acknowledge that AWS CloudFormation might create IAM resources with custom names"  
-Select "I acknowledge that AWS CloudFormation might require the following capability: CAPABILITY_AUTO_EXPAND"  
-```
-Click on "Create"  
+Click on "Launch Instance"
 
-Wait for Status CREATE_COMPLETE before proceeding  
-
-
-## Configure kubectl on Your EC2 Instance
-You will need to ssh into the AWS EC2 Instance you created above.  This is a step by step process.
+Choose AMI
 ```
-NOTE:  The EC2 Instance used for kubectl was created by CloudFomration references an image
-       we previouly created using the cloud-init script in this project.  The image can be found
-       under Images/AMIs from the EC2 Dashboard once you create it.  Simply update the default
-       ConsoleImageId in CloudFormation form when creeating the eks cluster.
+Amazon Linux 2 AMI (HVM), SSD Volume Type
+```  
+Click on "Select"
+
+Choose Instance Type
 ```
+t2.micro
+```
+Click on "Next"
+
+Configure Instance  
+Click on "Advanced Details
+```
+User data
+Select "As file"
+Click on "Choose File" and Select "cloud-init/cloud-init" from the local project directory 
+```  
+Next
+
+Add Storage  
+Next
+
+Click on "Add Tag"
+```
+Key: Name
+Value: eks_cloud_shell
+```
+Next  
+
+Configure Security Group  
+Select "Select an existing security group"  
+Select "default"
+
+Review and Launch  
+Click on "Launch"
 
 ### Connect to EC2 Instance
 Using ssh from your local machine, connect to your AWS EC2 Instance
@@ -83,18 +87,13 @@ Test aws cli
 ```
 aws s3 ls
 ```
-
-### Configure kubectl
-Configure kubectl to access the cluster
+## Create EKS Cluster, IAM Security and ALB Ingress Controller
+Will be using eksctl to create the cluster and the iam security provider.  Additionally the cloud-init script  
+install the project from githug and copied the scripts will use into the /home/ec2-user.  
 ```
-NOTE:  There is a script in /home/ec2-user called "configure-kube-control".  
-       You may run this script to automate the creation and population of environment 
-       variables in .kube/aws-auth-cm.yaml and .kube/control-kubeconfig.  It
-       uses the naming convention I specified in this HOW-TO.  So if you didn't
-       use the naming convention it won't work.  If you do use the script then all
-       you need to do is run the "Test Cluster" and "Test Cluster Nodes" steps.
-       
-./configure-kube-control
+eksctl create cluster --name eks-cluster --zones=us-east-1c,us-east-1b,us-east-1a --version 1.14 --fargate
+eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
+./configure-alb-ingress-controller
 ```
 
 ### Test Cluster
@@ -107,41 +106,66 @@ Use kubectl to test status of cluster nodes
 ```
 kubectl get nodes
 ```
-Wait till you see all nodes appear in "STATUS Ready"
-
 
 ## Deploy WebApp to Your Cluster
-You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.
+You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
+
+### Create a AWS EKS Fargate Profile
+Will use eksctl to create a unique Fargate Profile for this webapp.  This also assoicates a namespace with the profile which we will  
+use when deploying the webapp below.    
+```
+eksctl create fargateprofile --name web --namespace web-namespace --cluster eks-cluster
+```
 
 ### Deploy Web App
+Deploy the webapp to the cluster using the Fargate Profile and Namespace we created above.
+```
+NOTE: There is also a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.  It requires the AWS VPC Public Subnets used by the cluster and    
+can only be known after the cluster is created.  Also the Application Load Balancer may take a few minutes to provision.
+```
 Use kubectl to create the web service
 ```
-kubectl apply -f ~/aws-eks-cluster-quickstart/scripts/web-deployment-service.yaml
+
+kubectl apply -f web-namespace.yaml
+
+kubectl apply -f web-deployment.yaml
+kubectl apply -f web-service.yaml
+
+./configure-web-ingress
+kubectl apply -f web-ingress.yaml
 ```
 
 ### Show Pods Running
 Use kubectl to display pods
 ```
-kubectl get pods --output wide
+kubectl get pods -n web-namespace --output wide
 ```
 Wait till you see all pods appear in "STATUS Running"
 
-### Get AWS External Load Balancer Address
-Capture EXTERNAL-IP for use below
+### Get AWS External Application Load Balancer Address
+Capture ADDRESS for use below
 ```
-kubectl get service web --output wide
+kubectl get ingress/web-ingress -n web-namespace
 ```
 
 ### Test from browser
 Using your client-side browser enter the following URL
 ```
-http://<EXTERNAL-IP>
+http://<ADDRESS>
 ```
 
-### Delete Deployment, Service
-Use kubectl to delete application
+### Delete Deployment, Service, Namespace
+Use kubectl and eksctl to delete application.
 ```
-kubectl delete -f ~/aws-eks-cluster-quickstart/scripts/web-deployment-service.yaml
+kubectl delete -f web-ingress.yaml
+kubectl delete -f web-service.yaml
+kubectl delete -f web-deployment.yaml
+kubectl delete -f web-namespace.yaml
+```
+### Delete Fargate Profile
+Use eksctl to delete profile.
+```
+eksctl delete fargateprofile --name web --cluster eks-cluster
 ```
 
 ## Configure the Kubernetes Dashboard (optional)
@@ -171,24 +195,32 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-da
 ```
 
 ## Remove Your AWS EKS Cluster
-Using the AWS Console to delete all resources used by the AWS EKS Cluster
+Use eksctl to delete all resources used by the AWS EKS Cluster
 ```
-Note: Before proceeding be sure you delete deployment,service web as instructed above.
-      Failure to do so will cause cloudformation script to fail.
+Note: Before proceeding be sure you delete the ingress, service, deployment, and namespace as instructed above.
 ```
-### AWS CloudFormation
-Delete "eks-cluster-demo" Stack  
+### Delete EKS Cluster
+Delete the EKS Cluster using eksctl
+```
+eksctl delete cluster --name eks-cluster 
+```
+Wait till completed before proceeding.  
 
-### AWS EC2 Dashboard
-#### Instances
-Terminate "kubectl-console" Instance  
+### Delete IAM Policy
+Delete the IAM Policy we created initially.
+```
+alb_ingress_controller=`aws iam list-policies --query 'Policies[?PolicyName==\`alb-ingress-controller\`].Arn' --output text`
+aws iam delete-policy --policy-arn ${alb_ingress_controller}
+```
 
-#### Security Groups
-Delete Security Group "launch-wizard-1"
+### Delete EC2 Instance
+#### AWS EC2 Dashboard
+Terminate "eks_cloud_shell" Instance  
+
 
 ## References
-AWS EKS QuickStart  
-https://github.com/kskalvar/aws-eks-cluster-quickstart  
+AWS EKS Fargate QuickStart  
+https://github.com/kskalvar/aws-eks-cluster-fargate-quickstart  
 
 AWS Summit Slides for EKS  
 https://www.slideshare.net/AmazonWebServices/srv318-running-kubernetes-with-amazon-eks  
@@ -198,3 +230,9 @@ https://kubernetes.io
 
 AWS EKS Getting Started  
 https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html  
+
+
+How do I set up the ALB Ingress Controller on an Amazon EKS cluster for Fargate?  
+https://aws.amazon.com/premiumsupport/knowledge-center/eks-alb-ingress-controller-fargate/
+
+

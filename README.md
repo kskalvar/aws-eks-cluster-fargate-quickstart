@@ -3,8 +3,7 @@ AWS Elastic Kubernetes Service (EKS) Fargate QuickStart
 Abstract:
 ```
 Although AWS EKS has been available for quite a while and AWS EKS Fargate has finally been released, there are 
-still some manual configuration required to get the Fargate worker nodes to work with the cluster. In this QuickStart
-we're going to 
+still some manual configuration required to get the Fargate worker nodes to work with the cluster.
 ```
 This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  
 ```

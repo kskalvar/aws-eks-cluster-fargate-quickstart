@@ -216,20 +216,11 @@ Terminate "eks_cloud_shell" Instance
 
 
 ## References
-AWS EKS Fargate QuickStart  
-https://github.com/kskalvar/aws-eks-cluster-fargate-quickstart  
+AWS EKS Fargate QuickStart
+https://github.com/kskalvar/aws-eks-cluster-fargate-quickstart
 
-AWS Summit Slides for EKS  
-https://www.slideshare.net/AmazonWebServices/srv318-running-kubernetes-with-amazon-eks  
+How do I set up the ALB Ingress Controller on an Amazon EKS cluster for Fargate?
+https://aws.amazon.com/premiumsupport/knowledge-center/eks-alb-ingress-controller-fargate
 
-Kubernetes  
-https://kubernetes.io  
-
-AWS EKS Getting Started  
-https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html  
-
-
-How do I set up the ALB Ingress Controller on an Amazon EKS cluster for Fargate?  
-https://aws.amazon.com/premiumsupport/knowledge-center/eks-alb-ingress-controller-fargate/
 
 

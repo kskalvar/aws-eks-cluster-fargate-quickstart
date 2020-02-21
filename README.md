@@ -7,7 +7,7 @@ still some manual configuration required to get the Fargate worker nodes to work
 ```
 This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  
 ```
-Note:  This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root
+Note: This how-to assumes you are creating the eks cluster in us-east-1, you have access to your AWS Root
 Account, and you can login to an EC2 Instance remotely.
 ```
 Steps:  
@@ -85,7 +85,7 @@ aws s3 ls
 ```
 ## Create EKS Cluster, IAM Security and ALB Ingress Controller
 We will be using eksctl to create the cluster and the iam security provider.  The cloud-init script  
-will install this project from github and copy any scripts we need into /home/ec2-user.  
+also installed this project from github and copy installation scripts we need into /home/ec2-user.  
 ```
 eksctl create cluster --name eks-cluster --zones=us-east-1c,us-east-1b,us-east-1a --version 1.14 --fargate
 eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
@@ -119,7 +119,7 @@ Deploy the webapp to the cluster using the Fargate Profile and Namespace we crea
 NOTE: There is also a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.
 It requires the AWS VPC Public Subnets used by the cluster and can only be known after the cluster is created.
 
-Additionall the Application Load Balancer may take a few minutes to provision.
+The Application Load Balancer created my web-ingress.yaml may take a few minutes to provision.
 ```
 Use kubectl to create the web service
 ```

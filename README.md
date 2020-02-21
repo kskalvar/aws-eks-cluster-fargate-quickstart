@@ -2,7 +2,7 @@ AWS Elastic Kubernetes Service (EKS) Fargate QuickStart
 =======================================================
 Abstract:
 ```
-Although AWS EKS has been available for quite a while and AWS EKS Fargate has finally been released, there are 
+Although AWS EKS has been available for quite sometime and AWS EKS Fargate has finally been released, there are 
 still some manual configuration required to get the Fargate worker nodes to work with the cluster.
 ```
 This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  
@@ -24,7 +24,7 @@ To make this first microservice easy to deploy we'll use a docker image located 
 The project also includes the Dockerfile for those interested in the configuration of the actual application or to build your own and deploy using ECR.
 
 ## Create an EC2 Instance 
-We'll using an EC2 instance to install kubectl, eksctl, create the EKS Cluster, and worker nodes.  This is a step by step process.
+We'll using an EC2 instance to install kubectl, eksctl, so we can create the EKS Cluster, and worker nodes.  This is a step by step process.
 
 ### AWS EC2 Dashboard
 

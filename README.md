@@ -3,7 +3,9 @@ AWS Elastic Kubernetes Service (EKS) Fargate QuickStart
 Abstract:
 ```
 Although AWS EKS has been available for quite sometime and AWS EKS Fargate has finally been released, there are 
-still some manual configuration required to get the Fargate worker nodes to work with the cluster.
+still some manual configuration steps required to get the Fargate worker nodes to work with the cluster.  In this quickstart
+we'll step you throught the entire process of deploying a simple web application and give a simple demo of how fargate can
+scale nodes dynamically.
 ```
 This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  
 ```
@@ -233,8 +235,8 @@ Terminate "eks_cloud_shell" Instance
 AWS EKS Fargate QuickStart  
 https://github.com/kskalvar/aws-eks-cluster-fargate-quickstart
 
-How do I set up the ALB Ingress Controller on an Amazon EKS cluster for Fargate?
-https://aws.amazon.com/premiumsupport/knowledge-center/eks-alb-ingress-controller-fargate
+ALB Ingress Controller on Amazon EKS  
+https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
 
 
 

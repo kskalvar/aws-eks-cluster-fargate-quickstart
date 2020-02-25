@@ -218,7 +218,9 @@ Wait till completed before proceeding.
 ### Delete IAM Policy
 Delete the IAM Policy we created initially.
 ```
-alb_ingress_controller=`aws iam list-policies --query 'Policies[?PolicyName==\`alb-ingress-controller\`].Arn' --output text`
+alb_ingress_controller=`aws iam list-policies \
+                        --query 'Policies[?PolicyName==\`alb-ingress-controller\`].Arn' \
+                        --output text`
 aws iam delete-policy --policy-arn ${alb_ingress_controller}
 ```
 ### Delete EC2 Instance

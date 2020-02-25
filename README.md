@@ -86,7 +86,7 @@ aws s3 ls
 You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
   
 We will be using eksctl to create the cluster and the iam security provider.  The cloud-init script  
-also installed this project from github and copied the installation scripts we need into /home/ec2-user.  
+also installed this project from github and copied installation scripts we will use into /home/ec2-user.  
 ### Create Cluster
 Using eksctl create the cluster
 ```
@@ -124,10 +124,7 @@ which we will use when deploying the webapp below.
 eksctl create fargateprofile --name web --namespace web-namespace --cluster eks-cluster
 ```
 Using AWS Managment Console goto the AWS EKS Dashboard and insure your cluster Fargate Profile is "Active"  
-
-### Deploy Web App
-Deploy the webapp to the cluster using the Fargate Profile and Namespace we created above.  
-### Configure the Application Load Balancer
+### Configure the web ingress
 You will use the following script to configure the web ingress
 ```
 NOTE: There is a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.  
@@ -136,6 +133,7 @@ Using this script will pre-populate it so you don't need to edit manually.
 
 ./configure-web-ingress
 ```
+### Create the Web Service
 Use kubectl to create the web service  
 ```
 kubectl apply -f web-namespace.yaml

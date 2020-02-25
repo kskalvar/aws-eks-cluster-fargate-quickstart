@@ -114,6 +114,7 @@ Configure the ingress controller using the provide script
 ```
 ./configure-alb-ingress-controller
 ```
+Wait till deployment rollout is complete.
 ## Deploy Simple WebApp to Your Cluster
 You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
 
@@ -157,6 +158,12 @@ Using your client-side browser enter the following URL. NOTE: It takes a few min
 can check using the AWS Management Console by goint to the EC2 Dashboard/Load Balancing
 ```
 http://<ADDRESS>
+```
+### Test Scaling
+Use kubectl to test scaling of the application
+```
+kubectl scale deployment web-container-ip --replicas=4 -n web-namespace
+kubectl get pods,nodes -n web-namespace --output wide
 ```
 
 ### Delete Deployment, Service, Namespace

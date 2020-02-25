@@ -160,7 +160,7 @@ can check using the AWS Management Console by goint to the EC2 Dashboard/Load Ba
 http://<ADDRESS>
 ```
 ### Test Scaling
-Use kubectl to test scaling of the application
+Use kubectl to test scaling of the application.  You should see a new node for each container you create
 ```
 kubectl scale deployment web-container-ip --replicas=4 -n web-namespace
 kubectl get pods,nodes -n web-namespace --output wide
@@ -204,11 +204,6 @@ Using your local client-side browser enter the following URL. The configure-kube
 also generated a "Security Token" required to login to the dashboard.
 ```
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
-```
-### Scale Deployment
-Scale the deploment as requried
-```
-kubectl scale deployment web-container-ip --replicas=4 -n web-namespace
 ```
 ## Remove AWS EKS Cluster
 Use eksctl to delete all resources used by the AWS EKS Cluster

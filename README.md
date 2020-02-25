@@ -128,10 +128,12 @@ Using AWS Managment Console goto the AWS EKS Dashboard and insure your cluster F
 ### Deploy Web App
 Deploy the webapp to the cluster using the Fargate Profile and Namespace we created above.  
 ### Configure the Application Load Balancer
+You will use the following script to configure the web ingress
+```
 NOTE: There is a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.  
 It requires the AWS VPC Public Subnets used by the cluster and can only be known after the cluster is created.  
 Using this script will pre-populate it so you don't need to edit manually.  
-```
+
 ./configure-web-ingress
 ```
 Use kubectl to create the web service  
@@ -228,7 +230,7 @@ aws iam delete-policy --policy-arn ${alb_ingress_controller}
 Terminate "eks_cloud_shell" Instance  
 
 ## References
-AWS EKS Fargate QuickStart
+AWS EKS Fargate QuickStart  
 https://github.com/kskalvar/aws-eks-cluster-fargate-quickstart
 
 How do I set up the ALB Ingress Controller on an Amazon EKS cluster for Fargate?

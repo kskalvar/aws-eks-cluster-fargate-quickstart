@@ -26,12 +26,12 @@ The project also includes the Dockerfile for those interested in the configurati
 We'll using an EC2 instance to install kubectl, eksctl, so we can create the EKS Cluster, and worker nodes.  This is a step by step process.
 
 ### AWS EC2 Dashboard
+Using AWS Managment Console goto the AWS EC2 Dashboard  
+Click on "Launch Instance"  
 
-Click on "Launch Instance"
-
-Choose AMI
+Choose AMI  
 ```
-Amazon Linux 2 AMI (HVM), SSD Volume Type
+Amazon Linux 2 AMI (HVM), SSD Volume Type  
 ```  
 Click on "Select"
 
@@ -92,11 +92,8 @@ Using eksctl create the cluster
 ```
 eksctl create cluster --name eks-cluster --zones=us-east-1c,us-east-1b,us-east-1a --version 1.14 --fargate
 ```
-Wait till cluster creation has completed before proceeding.
-```
-eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
-./configure-alb-ingress-controller
-```
+Wait till cluster creation has completed before proceeding.  
+
 ### Test Cluster
 Using kubectl test the cluster status
 ```
@@ -107,7 +104,16 @@ Use kubectl test status of cluster nodes
 ```
 kubectl get nodes
 ```
-
+### Configure Security
+Configure security using eksctl
+```
+eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
+```
+### Configure the Ingress Controller
+Configure the ingress controller using the provide script
+```
+./configure-alb-ingress-controller
+```
 ## Deploy Simple WebApp to Your Cluster
 You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
 
@@ -117,41 +123,38 @@ which we will use when deploying the webapp below.
 ```
 eksctl create fargateprofile --name web --namespace web-namespace --cluster eks-cluster
 ```
+Using AWS Managment Console goto the AWS EKS Dashboard and insure your cluster Fargate Profile is "Active"  
 
 ### Deploy Web App
-Deploy the webapp to the cluster using the Fargate Profile and Namespace we created above.
+Deploy the webapp to the cluster using the Fargate Profile and Namespace we created above.  
+### Configure the Application Load Balancer
+NOTE: There is a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.  
+It requires the AWS VPC Public Subnets used by the cluster and can only be known after the cluster is created.  
+Using this script will pre-populate it so you don't need to edit manually.  
 ```
-NOTE: There is also a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.
-It requires the AWS VPC Public Subnets used by the cluster and can only be known after the cluster is created.
-
-The Application Load Balancer created my web-ingress.yaml may take a few minutes to provision.
+./configure-web-ingress
 ```
-Use kubectl to create the web service
+Use kubectl to create the web service  
 ```
 kubectl apply -f web-namespace.yaml
-
 kubectl apply -f web-deployment.yaml
 kubectl apply -f web-service.yaml
-
-./configure-web-ingress
 kubectl apply -f web-ingress.yaml
 ```
-
 ### Show Pods Running
 Use kubectl to display pods
 ```
 kubectl get pods -n web-namespace --output wide
 ```
 Wait till you see all pods appear in "STATUS Running"
-
 ### Get AWS External Application Load Balancer Address
 Capture ADDRESS for use below
 ```
 kubectl get ingress/web-ingress -n web-namespace
 ```
-
 ### Test from browser
-Using your client-side browser enter the following URL. NOTE: It takes a few minute for ALB to be provisioned!
+Using your client-side browser enter the following URL. NOTE: It takes a few minute for ALB to be provisioned!  You  
+can check using the AWS Management Console by goint to the EC2 Dashboard/Load Balancing
 ```
 http://<ADDRESS>
 ```
@@ -164,11 +167,13 @@ kubectl delete -f web-service.yaml
 kubectl delete -f web-deployment.yaml
 kubectl delete -f web-namespace.yaml
 ```
+Wait till the delete has completed before proceeding
 ### Delete Fargate Profile
 Use eksctl to delete profile.
 ```
 eksctl delete fargateprofile --name web --cluster eks-cluster
 ```
+Wait till the fargate profile has completed before proceeding
 
 ## Configure the Kubernetes Dashboard (Optional)
 You will need to configure the dashboard from the AWS EC2 Instance you created as well.  Use ssh to create a tunnel on port 8001 from your local machine.  This is a step by step process.

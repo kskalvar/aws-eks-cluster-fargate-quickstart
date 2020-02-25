@@ -91,6 +91,9 @@ also installed this project from github and copied the installation scripts we n
 Using eksctl create the cluster
 ```
 eksctl create cluster --name eks-cluster --zones=us-east-1c,us-east-1b,us-east-1a --version 1.14 --fargate
+```
+Wait till cluster creation has completed before proceeding.
+```
 eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
 ./configure-alb-ingress-controller
 ```

@@ -106,14 +106,13 @@ Use kubectl test status of cluster nodes
 ```
 kubectl get nodes
 ```
-### Configure Security
-Configure security using eksctl
-```
-eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
-```
 ### Configure the Ingress Controller
 Configure the ingress controller using the provide script
 ```
+NOTE: There is a script called "configure-alb-ingress-controller" in /home/ec2-user to configure the ingress
+controller for kubernetes and as well as associated AWS IAM Policies.  Using this script will automate the steps
+required so won't have to do them manually. 
+
 ./configure-alb-ingress-controller
 ```
 Wait till deployment rollout is complete.

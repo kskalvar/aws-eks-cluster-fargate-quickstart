@@ -181,7 +181,8 @@ Use eksctl to delete profile.
 ```
 eksctl delete fargateprofile --name web --cluster eks-cluster
 ```
-Wait till the fargate profile has completed before proceeding
+Wait till the fargate profile delete has completed before proceeding.  Check the AWS EKS Dashboard since this  
+one takes a while.
 
 ## Configure the Kubernetes Dashboard (Optional)
 You will need to configure the dashboard from the AWS EC2 Instance you created as well.  Use ssh to create a tunnel on port 8001 from your local machine.  This is a step by step process.

@@ -111,7 +111,7 @@ Configure the ingress controller using the provide script
 ```
 NOTE: There is a script called "configure-alb-ingress-controller" in /home/ec2-user to configure the ingress
 controller for kubernetes and as well as associated AWS IAM Policies.  Using this script will automate the steps
-required so won't have to do them manually. 
+required so you won't have to do them manually. 
 
 ./configure-alb-ingress-controller
 ```
@@ -121,7 +121,7 @@ You will need to ssh into the AWS EC2 Instance you created above. This is a step
 
 ### Create a AWS EKS Fargate Profile
 Will use eksctl to create a unique Fargate Profile for this webapp.  This also assoicates a namespace with the profile
-which we will use when deploying the webapp below.    
+which we will use when deploying the webapp below.
 ```
 eksctl create fargateprofile --name web --namespace web-namespace --cluster eks-cluster
 ```

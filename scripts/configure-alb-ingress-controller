@@ -8,6 +8,8 @@ region=us-east-1
 cluster=`aws eks list-clusters --query clusters --output text`
 vpc=`aws eks describe-cluster --name ${cluster} --query 'cluster.resourcesVpcConfig.vpcId' --output text`
 
+eksctl utils associate-iam-oidc-provider --cluster ${cluster} --approve
+
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml 
 kubectl apply -f rbac-role.yaml
 

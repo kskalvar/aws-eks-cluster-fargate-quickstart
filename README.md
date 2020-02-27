@@ -13,21 +13,21 @@ Note: This how-to assumes you are creating the eks cluster in us-east-1, you hav
 Account, and you can login to an EC2 Instance remotely.
 ```
 Steps:  
-* [Create an EC2 Instance](#create-an-ec2-instance)
+* [Create an EC2 Instance with cloud-init)
 * [Create EKS Cluster IAM Security and ALB Ingress Controller](#create-eks-cluster-iam-security-and-alb-ingress-controller)  
 * [Deploy Simple WebApp to Your Cluster](#deploy-simple-webapp-to-your-cluster)
 * [Configure the Kubernetes Dashboard (Optional)](#configure-the-kubernetes-dashboard-optional)  
-* [Remove AWS EKS Cluster](#remove-aws-eks-cluster)  
+* [## Remove AWS EKS Cluster and Resources](#remove-aws-eks-cluster-and-resources)  
 * [References](#references)   
 
 To make this first microservice easy to deploy we'll use a docker image located in DockerHub at kskalvar/web.  This image is nothing more than a simple webapp that returns the current ip address of the container it's running in.  We'll create an external AWS Application Load Balancer and you should be able to see a unique ip address as it is load balanced across containers.
 
 The project also includes the Dockerfile for those interested in the configuration of the actual application or to build your own and deploy using ECR.
 
-## Create an EC2 Instance 
+## Create an EC2 Instance with cloud-init
 We'll using an EC2 instance to install kubectl, eksctl, so we can create the EKS Cluster, and worker nodes.  This is a step by step process.
-
-### AWS EC2 Dashboard
+### Create EC2 Instance
+#### AWS EC2 Dashboard
 Using AWS Managment Console goto the AWS EC2 Dashboard  
 Click on "Launch Instance"  
 
@@ -84,6 +84,7 @@ Test aws cli
 ```
 aws s3 ls
 ```
+
 ## Create EKS Cluster, IAM Security and ALB Ingress Controller
 You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
   
@@ -116,6 +117,7 @@ required so you won't have to do them manually.
 ./configure-alb-ingress-controller
 ```
 Wait till deployment rollout is complete.
+
 ## Deploy Simple WebApp to Your Cluster
 You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
 
@@ -207,12 +209,17 @@ also generated a "Security Token" required to login to the dashboard.
 ```
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 ```
-## Remove AWS EKS Cluster
+
+## Remove AWS EKS Cluster and Resources
+### Delete EKS Cluster
 Use eksctl to delete all resources used by the AWS EKS Cluster
 ```
 Note: Before proceeding be sure you delete the ingress, service, deployment, and namespace as instructed above.
 ```
-### Delete EKS Cluster
+### Delete EC2 Instance
+#### AWS EC2 Dashboard
+Terminate "eks_cloud_shell" Instance  
+
 Delete the EKS Cluster using eksctl
 ```
 eksctl delete cluster --name eks-cluster 
@@ -227,9 +234,6 @@ alb_ingress_controller=`aws iam list-policies \
                         --output text`
 aws iam delete-policy --policy-arn ${alb_ingress_controller}
 ```
-### Delete EC2 Instance
-#### AWS EC2 Dashboard
-Terminate "eks_cloud_shell" Instance  
 
 ## References
 AWS EKS Fargate QuickStart  

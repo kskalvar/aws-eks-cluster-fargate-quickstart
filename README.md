@@ -13,7 +13,7 @@ Note: This how-to assumes you are creating the eks cluster in us-east-1, you hav
 Account, and you can login to an EC2 Instance remotely.
 ```
 Steps:  
-* [Create an EC2 Instance with cloud-init)(#create-an-ec2-instance-with-cloud-init)
+* [Create an EC2 Instance with cloud-init](#create-an-ec2-instance-with-cloud-init)
 * [Create EKS Cluster IAM Security and ALB Ingress Controller](#create-eks-cluster-iam-security-and-alb-ingress-controller)  
 * [Deploy Simple WebApp to Your Cluster](#deploy-simple-webapp-to-your-cluster)
 * [Configure the Kubernetes Dashboard (Optional)](#configure-the-kubernetes-dashboard-optional)  

@@ -85,7 +85,7 @@ Test aws cli
 aws s3 ls
 ```
 
-## Create EKS Cluster, IAM Security and ALB Ingress Controller
+## Create EKS Cluster, IAM Security, and ALB Ingress Controller
 You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
   
 We will be using eksctl to create the cluster and the iam security provider.  The cloud-init script  

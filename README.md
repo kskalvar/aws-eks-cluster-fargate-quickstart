@@ -189,8 +189,8 @@ one takes a while.
 ## Configure the Kubernetes Dashboard (Optional)
 You will need to configure the dashboard from the AWS EC2 Instance you created as well.  Use ssh to create a tunnel on port 8001 from your local machine.  This is a step by step process.
 
-### configure-kube-dashboard
-Configure Kubernetes Dashboard 
+### Configure the Kube Dashboard
+You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
 ```
 NOTE:  There is a script in /home/ec2-user called "configure-kube-dashboard".  
        You may run this script to automate the installation of the dashboard components into the cluster,

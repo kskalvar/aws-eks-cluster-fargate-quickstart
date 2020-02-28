@@ -157,8 +157,8 @@ Capture ADDRESS for use below
 kubectl get ingress/web-ingress -n web-namespace
 ```
 ### Test from browser
-Using your client-side browser enter the following URL. NOTE: It takes a few minute for ALB to be provisioned!  You  
-can check using the AWS Management Console by goint to the EC2 Dashboard/Load Balancing
+Using your client-side web browser enter the ADDRESS from the step above.  It takes a few minute for ALB to be provisioned!  
+You can check using the AWS Management Console by goint to the EC2 Dashboard/Load Balancers
 ```
 http://<ADDRESS>
 ```
@@ -203,7 +203,7 @@ Using ssh from your local machine, open a tunnel to your AWS EC2 Instance
 ```
 ssh -i <AWS EC2 Private Key> ec2-user@<AWS EC2 Instance IP Address> -L 8001:localhost:8001
 ```
-### Test from Local Browser
+### Connect to Dashboard using Local Browser
 Using your local client-side browser enter the following URL. The configure-kube-dashboard script
 also generated a "Security Token" required to login to the dashboard.
 ```

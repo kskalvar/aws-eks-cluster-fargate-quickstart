@@ -156,7 +156,7 @@ Capture ADDRESS for use below
 ```
 kubectl get ingress/web-ingress -n web-namespace
 ```
-### Test from browser
+### Connect to AWS ALB from Local Browser
 Using your client-side web browser enter the ADDRESS from the step above.  It takes a few minute for ALB to be provisioned!  
 You can check using the AWS Management Console by goint to the EC2 Dashboard/Load Balancers
 ```

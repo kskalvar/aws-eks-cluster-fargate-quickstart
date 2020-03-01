@@ -8,13 +8,14 @@ region=us-east-1
 cluster=`aws eks list-clusters --query clusters --output text`
 vpc=`aws eks describe-cluster --name ${cluster} --query 'cluster.resourcesVpcConfig.vpcId' --output text`
 
-eksctl utils associate-iam-oidc-provider --cluster ${cluster} --approve
+eksctl utils associate-iam-oidc-provider --cluster ${cluster} --approve >/dev/null 2>/dev/null
 
-curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml 
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml >/dev/null 2>/dev/null
 kubectl apply -f rbac-role.yaml
 
-curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/iam-policy.json
-aws iam create-policy --policy-name alb-ingress-controller --policy-document file://iam-policy.json
+curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/iam-policy.json >/dev/null 2>/dev/null
+aws iam create-policy --policy-name alb-ingress-controller --policy-document file://iam-policy.json  >/dev/null 2>/dev/null
+
 
 alb_ingress_controller=`aws iam list-policies --query 'Policies[?PolicyName==\`alb-ingress-controller\`].Arn' --output text`
 eksctl create iamserviceaccount --name alb-ingress-controller \

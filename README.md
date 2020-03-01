@@ -211,15 +211,11 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-da
 ```
 
 ## Remove AWS EKS Cluster and Resources
-### Delete EKS Cluster
-Use eksctl to delete all resources used by the AWS EKS Cluster
+You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.
 ```
 Note: Before proceeding be sure you delete the ingress, service, deployment, and namespace as instructed above.
 ```
-### Delete EC2 Instance
-#### AWS EC2 Dashboard
-Terminate "eks_cloud_shell" Instance  
-
+### Delete the EKS Cluster using eksctl
 Delete the EKS Cluster using eksctl
 ```
 eksctl delete cluster --name eks-cluster 
@@ -227,12 +223,18 @@ eksctl delete cluster --name eks-cluster
 Wait till completed before proceeding.  
 
 ### Delete IAM Policy
-Delete the IAM Policy we created initially.
+Delete the IAM Policy we created initially using aws cli
 ```
 alb_ingress_controller=`aws iam list-policies \
                         --query 'Policies[?PolicyName==\`alb-ingress-controller\`].Arn' \
                         --output text`
 aws iam delete-policy --policy-arn ${alb_ingress_controller}
+```
+### Delete EC2 Instance
+#### AWS EC2 Dashboard
+Using the AWS Console goto the EC2 Dashboard and delete the ec2 instance we used as the eks_cloud_shell.
+```
+Terminate "eks_cloud_shell" Instance  
 ```
 
 ## References

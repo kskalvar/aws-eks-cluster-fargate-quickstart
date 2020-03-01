@@ -166,7 +166,7 @@ http://<ADDRESS>
 Use kubectl to test scaling of the application.  You should see a new node for each container you create
 ```
 kubectl scale deployment web-container-ip --replicas=4 -n web-namespace
-kubectl get pods,nodes -n web-namespace --output wide
+kubectl get pods,nodes -n web-namespace
 ```
 
 ### Delete Deployment, Service, Namespace

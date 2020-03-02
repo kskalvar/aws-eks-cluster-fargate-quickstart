@@ -10,10 +10,10 @@ vpc=`aws eks describe-cluster --name ${cluster} --query 'cluster.resourcesVpcCon
 
 eksctl utils associate-iam-oidc-provider --cluster ${cluster} --approve >/dev/null 2>/dev/null
 
-curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml >/dev/null 2>/dev/null
+curl -s https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml > rbac-role.yaml
 kubectl apply -f rbac-role.yaml
 
-curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/iam-policy.json >/dev/null 2>/dev/null
+curl -s https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/iam-policy.json > iam-policy.json
 aws iam create-policy --policy-name alb-ingress-controller --policy-document file://iam-policy.json  >/dev/null 2>/dev/null
 
 

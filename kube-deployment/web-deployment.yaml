@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "web-container-ip"
+  namespace: "web-namespace"
+  labels:
+    app: webme
+spec:
+  selector:
+    matchLabels:
+      app: "web"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: "web"
+    spec:
+      containers:
+      - image: kskalvar/web
+        imagePullPolicy: Always
+        name: "web"
+        ports:
+        - containerPort: 5000
+        resources:
+           requests:
+              cpu: 200m

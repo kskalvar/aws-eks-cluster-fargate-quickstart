@@ -65,11 +65,11 @@ write_files:
         echo "mkdir /home/ec2-user/.kube" >> /tmp/install-eks-support
         runuser -l ec2-user -c 'mkdir ~/.kube'
      
-        echo "copy eks-admin-cluster-role-binding.yaml /home/ec2-user/.kube" >> /tmp/install-eks-support
-        runuser -l ec2-user -c 'cp ~/aws-eks-cluster-quickstart/kube-config/eks-admin-cluster-role-binding.yaml ~/.kube'
+        echo "copy eks-admin-cluster-role-binding.yaml /home/ec2-user" >> /tmp/install-eks-support
+        runuser -l ec2-user -c 'cp ~/aws-eks-cluster-quickstart/kube-config/eks-admin-cluster-role-binding.yaml ~'
         
-        echo "copy eks-admin-service-account.yaml /home/ec2-user/.kube" >> /tmp/install-eks-support
-        runuser -l ec2-user -c 'cp ~/aws-eks-cluster-quickstart/kube-config/eks-admin-service-account.yaml ~/.kube'
+        echo "copy eks-admin-service-account.yaml /home/ec2-user" >> /tmp/install-eks-support
+        runuser -l ec2-user -c 'cp ~/aws-eks-cluster-quickstart/kube-config/eks-admin-service-account.yaml ~'
  
         echo "copy alb-ingress-controller.yaml.txt /home/ec2-user" >> /tmp/install-eks-support
         runuser -l ec2-user -c 'cp ~/aws-eks-cluster-fargate-quickstart/kube-deployment/alb-ingress-controller.yaml.txt ~'

@@ -88,8 +88,13 @@ aws s3 ls
 ## Create EKS Cluster, IAM Security, and ALB Ingress Controller
 You will need to ssh into the AWS EC2 Instance you created above. This is a step by step process.  
   
-We will be using eksctl to create the cluster and the iam security provider.  The cloud-init script  
-also installed this project from github and copied installation scripts we will use into /home/ec2-user.  
+We will be using eksctl to create the cluster.  The cloud-init script also installed this project from github  
+and copied installation scripts we will use into /home/ec2-user.
+```
+Note:
+eksctl background tasks may timeout the ssh shell.  Yeah, so if you're create hangs you may want to use tmux or
+put the command into the background using the unix "&".  
+```  
 ### Create Cluster
 Using eksctl create the cluster
 ```
@@ -106,6 +111,11 @@ kubectl get svc
 Use kubectl test status of cluster nodes
 ```
 kubectl get nodes
+```
+### Configure AIM Security
+Uses eksctl to create the AIM Security Provider
+```
+eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
 ```
 ### Configure the Ingress Controller
 Configure the ingress controller using the provide script

@@ -142,13 +142,13 @@ Using AWS Managment Console goto the AWS EKS Dashboard and insure your cluster F
 You will use the following script to configure the web ingress
 ```
 NOTE: There is a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.  
-web-ingress.yaml requires the AWS VPC Public Subnets used by the cluster and can only be known after the cluster is created.  
-Using this script will pre-populate it so you don't need to edit manually.  
+web-ingress.yaml requires the AWS VPC Public Subnets used by the cluster and can only be known after the
+cluster is created.  Using this script will pre-populate it so you don't need to edit manually.  
 
 ./configure-web-ingress
 ```
 ### Create the Web Service
-Use kubectl to create the web service  
+Use kubectl to create the WebApp 
 ```
 kubectl apply -f web-namespace.yaml
 kubectl apply -f web-deployment.yaml

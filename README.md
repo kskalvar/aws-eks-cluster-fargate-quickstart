@@ -142,7 +142,7 @@ Using AWS Managment Console goto the AWS EKS Dashboard and insure your cluster F
 You will use the following script to configure the web ingress
 ```
 NOTE: There is a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.  
-It requires the AWS VPC Public Subnets used by the cluster and can only be known after the cluster is created.  
+web-ingress.yaml requires the AWS VPC Public Subnets used by the cluster and can only be known after the cluster is created.  
 Using this script will pre-populate it so you don't need to edit manually.  
 
 ./configure-web-ingress
@@ -188,11 +188,7 @@ kubectl delete -f web-deployment.yaml
 kubectl delete -f web-namespace.yaml
 ```
 Wait till the delete has completed before proceeding
-### Delete Fargate Profile
-Use eksctl to delete profile.
-```
-eksctl delete fargateprofile --name web --cluster eks-cluster
-```
+
 Wait till the fargate profile delete has completed before proceeding.  Check the AWS EKS Dashboard since this  
 one takes a while.
 

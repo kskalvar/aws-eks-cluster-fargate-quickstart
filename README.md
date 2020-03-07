@@ -95,7 +95,7 @@ We will be using eksctl to create the cluster.  The cloud-init script also insta
 and copied installation scripts we will use into /home/ec2-user.
 ```
 Note:
-eksctl background tasks may timeout the ssh shell.  Yeah, so if you're create hangs you may want to use tmux or
+eksctl background tasks may timeout the ssh shell.  Yeah, so if your create hangs you may want to use tmux or
 put the command into the background using the unix "&".  
 ```  
 ### Create Cluster
@@ -142,7 +142,7 @@ eksctl create fargateprofile --name web --namespace web-namespace --cluster eks-
 ```
 Using AWS Managment Console goto the AWS EKS Dashboard and insure your cluster Fargate Profile is "Active"  
 ### Configure the web ingress
-You will use the following script to configure the web ingress
+Use the following script to configure the web ingress
 ```
 NOTE: There is a script called "configure-web-ingress" in /home/ec2-user to configure the web-ingress.yaml.  
 web-ingress.yaml requires the AWS VPC Public Subnets used by the cluster and can only be known after the

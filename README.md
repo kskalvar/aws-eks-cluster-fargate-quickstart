@@ -28,8 +28,10 @@ To make this first microservice easy to deploy we'll use a docker image located 
 The project also includes the Dockerfile for those interested in the configuration of the actual application or to build your own and deploy using ECR.
 
 ## Create an EC2 Instance with cloud-init
-We'll using an EC2 instance to install kubectl, eksctl, so we can create the EKS Cluster, and worker nodes.  This is a step by step process.
-### Create EC2 Instance
+We'll using an EC2 instance to install kubectl, eksctl, and other support programs needed by aws so we can create the EKS Cluster,  
+This is a step by step process.
+
+### Create an EC2 Instance
 #### AWS EC2 Dashboard
 Using AWS Managment Console goto the AWS EC2 Dashboard  
 Click on "Launch Instance"  

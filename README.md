@@ -117,8 +117,8 @@ Use kubectl test status of cluster nodes
 ```
 kubectl get nodes
 ```
-### Configure AIM Security
-Uses eksctl to create the AIM Security Provider
+### Configure IAM Security Provider
+Uses eksctl to create the IAM Security Provider
 ```
 eksctl utils associate-iam-oidc-provider --cluster eks-cluster --approve
 ```

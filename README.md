@@ -7,7 +7,7 @@ there are still some manual steps required to get the Fargate worker nodes to wo
 In this quickstart we'll step you throught the entire process of deploying a simple web 
 application and give a simple demo of how fargate can scale nodes dynamically.
 
-The big difference this time from AWS EKS QuckStart we've done in the past using CloudFormation scripts,
+The big difference this time from AWS EKS QuckStart we've done in the past using CloudFormation, is
 we're now heavily dependent on using eksctl, the AWS EKS configuration tool.
 ```
 This solution shows how to create an AWS EKS Cluster with Fargate support and deploy a simple web application with an external Application Load Balancer.  

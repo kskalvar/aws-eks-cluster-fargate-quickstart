@@ -103,7 +103,7 @@ put the command into the background using the unix "&".
 ### Create Cluster
 Using eksctl create the cluster
 ```
-eksctl create cluster --name eks-cluster --zones=us-east-1c,us-east-1b,us-east-1a --version 1.14 --fargate
+eksctl create cluster --name eks-cluster --zones=us-east-1c,us-east-1b,us-east-1a --version 1.14 --fargate &    
 ```
 Wait till cluster creation has completed before proceeding.  
 
@@ -192,6 +192,7 @@ kubectl delete -f web-ingress.yaml
 kubectl delete -f web-service.yaml
 kubectl delete -f web-deployment.yaml
 kubectl delete -f web-namespace.yaml
+
 ```
 Wait till the delete has completed before proceeding
 

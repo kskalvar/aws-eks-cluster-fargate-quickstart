@@ -158,7 +158,8 @@ Use kubectl to create the WebApp
 kubectl apply -f web-namespace.yaml
 kubectl apply -f web-deployment.yaml
 kubectl apply -f web-service.yaml
-kubectl apply -f web-ingress.yaml
+kubectl apply -f web-ingress.yaml  
+
 ```
 ### Show Pods Running
 Use kubectl to display pods
